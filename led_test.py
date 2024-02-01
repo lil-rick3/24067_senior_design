@@ -1,18 +1,22 @@
-from picamera import PiCamera
+import RPi.GPIO as GPIO
 from time import sleep
 
-camera = PiCamera()
+# Set up GPIO
+led_pin = 17  # Change this to the GPIO pin you've connected the LED to
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(led_pin, GPIO.OUT)
 
-# Adjust camera settings if needed
-# camera.resolution = (width, height)
-# camera.rotation = rotation_angle
+try:
+    # Blink the LED 5 times
+    for _ in range(5):
+        print("LED ON")
+        GPIO.output(led_pin, GPIO.HIGH)
+        sleep(1)
+        
+        print("LED OFF")
+        GPIO.output(led_pin, GPIO.LOW)
+        sleep(1)
 
-# Preview the camera for 2 seconds (optional)
-camera.start_preview()
-sleep(2)
-
-# Capture a photo and save it
-camera.capture('/homr/julie/Desktop/test.jpg')
-
-# Stop the preview
-camera.stop_preview()
+finally:
+    # Clean up GPIO on program exit
+    GPIO.cleanup()
