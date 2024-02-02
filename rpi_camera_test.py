@@ -1,7 +1,18 @@
-from picamera2 import Picamera2
+#!/usr/bin/python3
+
+# Capture a PNG while still running in the preview mode.
+
 import time
+
+from picamera2 import Picamera2, Preview
+
 picam2 = Picamera2()
-capture_config = picam2.create_still_configuration()
-picam2.start(show_preview=True)
-time.sleep(1)
-array = picam2.switch_mode_and_capture_array(capture_config, "main")
+picam2.start_preview(Preview.QTGL)
+
+preview_config = picam2.create_preview_configuration(main={"size": (800, 600)})
+picam2.configure(preview_config)
+
+picam2.start()
+time.sleep(2)
+
+picam2.capture_file("test.png")
